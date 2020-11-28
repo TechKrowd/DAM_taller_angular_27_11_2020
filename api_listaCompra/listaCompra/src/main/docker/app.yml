@@ -1,0 +1,22 @@
+version: '2'
+services:
+  listacompra-app:
+    image: listacompra
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://listacompra-mysql:3306/listacompra?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SPRING_DATA_JEST_URI=http://listacompra-elasticsearch:9200
+      - SPRING_ELASTICSEARCH_REST_URIS=http://listacompra-elasticsearch:9200
+    ports:
+      - 8080:8080
+  listacompra-mysql:
+    extends:
+      file: mysql.yml
+      service: listacompra-mysql
+  listacompra-elasticsearch:
+    extends:
+      file: elasticsearch.yml
+      service: listacompra-elasticsearch
